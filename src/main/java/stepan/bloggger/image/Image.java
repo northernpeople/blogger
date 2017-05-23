@@ -5,34 +5,51 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+import stepan.bloggger.post.Post;
 
 @Entity
 public class Image {
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
+	@OneToOne
+	private Post post;
+
 	private String fileName;
 
 	private String contentType;
 
 	// size in bytes
 	private long size;
-	
+
 	private java.time.LocalDateTime uploaded;
+
+	public Image() {
+		uploaded = LocalDateTime.now();
+	}
 
 	public Image(String fileName) {
 		this();
 		this.fileName = fileName;
 	}
-	
-	public Image() { uploaded = LocalDateTime.now(); }
 
-	public Image(String fileName, String contentType, long size) {
+	public Image(Post post, String fileName, String contentType, long size) {
 		this(fileName);
+		this.post = post;
 		this.contentType = contentType;
 		this.size = size;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
 	}
 
 	public Long getId() {
@@ -50,8 +67,6 @@ public class Image {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	
-	
 
 	public java.time.LocalDateTime getUploaded() {
 		return uploaded;
@@ -81,12 +96,9 @@ public class Image {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Image [id=").append(id).append(", fileName=").append(fileName).append(", contentType=")
-				.append(contentType).append(", size=").append(size).append("]");
+				.append(contentType).append(", size=").append(size).append(", postid=").append(post.getId())
+				.append("]");
 		return builder.toString();
 	}
-
-	
-	
-	
 
 }

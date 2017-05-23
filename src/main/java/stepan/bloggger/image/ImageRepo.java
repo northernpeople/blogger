@@ -6,4 +6,6 @@ public interface ImageRepo extends JpaRepository<Image, Long>{
 
 	Image findByFileName(String fileName);
 
+	Image findFirstByPostId(Long postId);
+
 }

@@ -39,13 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    protected void configure(HttpSecurity http) throws Exception {
 	        http
 		        .authorizeRequests()
-		            .antMatchers("/admin/**").hasRole("ADMIN") // order is important
-		            .antMatchers("/**").hasAnyRole("ADMIN", "USER")
+		        	.antMatchers("/**").permitAll()
+//		            .antMatchers("/admin/**").hasRole("ADMIN") // order is important
+//		            .antMatchers("/**").hasAnyRole("ADMIN", "USER")
 		            .and()
 	            .formLogin()
 	                .loginPage("/login")
 	                .permitAll()
-	                .successHandler((request, response, authentication) -> response.sendRedirect("/main"))
+	                .successHandler((request, response, authentication) -> response.sendRedirect("/route"))
 	                .failureHandler((request, response, authentication) -> response.sendRedirect("/login"))
 	                .and()
 	           .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

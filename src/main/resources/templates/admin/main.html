@@ -9,6 +9,9 @@
 				<tr><th>email</th></tr>
 				<tr th:each="u : ${users}">
 					<td th:text="${u.username}"> email </td>
+					<td th:text="${u.role}"> role </td>
+					
+					
 					<td><a class="btn red" th:href="@{/admin/delete_user/{id}(id=${u.id})}">delete</a></td>
 					<td><a class="btn red" th:href="@{/admin/reset_pass_user/{id}(id=${u.id})}">reset password</a></td>
 				</tr>

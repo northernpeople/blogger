@@ -4,7 +4,7 @@
 	    <title>Please provide your email address and desired password:</title>
 	</head>
 	<body>  		      
-		<form  action="#" th:action="@{/login}" th:object="${user}" method="post">
+		<form  action="#" th:action="@{/user/register}" th:object="${registration_request}" method="post">
 			<input type="text" th:field="*{username}"  	 	placeholder="email" />
 			<input type="password" th:field="*{password}"  	placeholder="password" />
 			<input type="submit" value="Submit" />

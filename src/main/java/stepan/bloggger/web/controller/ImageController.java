@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-
+import stepan.bloggger.image.Image;
 import stepan.bloggger.image.ImageService;
 
 @Controller
@@ -26,13 +26,15 @@ public class ImageController {
 	@Autowired
 	ImageService service;
 	
+	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/{fileName:.+}")
-	public ResponseEntity<?> rawEvidence(@PathVariable String fileName){
-		Resource file = service.getBy(fileName);
+	@RequestMapping(method = RequestMethod.GET, value="/{id}")
+	public ResponseEntity<?> rawEvidence(@PathVariable Long id){
+		Image image = service.getById(id);
+		Resource file = service.get(image);
 		try {
 			return ResponseEntity.ok()
-					.contentType(MediaType.valueOf(service.typeByFileName(fileName)))
+					.contentType(MediaType.valueOf(image.getContentType()))
 					.contentLength(file.contentLength())
 					.body(new InputStreamResource(file.getInputStream()));
 		} catch (IOException e) {
@@ -40,28 +42,18 @@ public class ImageController {
 		}
 	}
 	
-	@RequestMapping(value="/form")
-	public String evidenceForm(){ return "evidence_form"; }
-	
-	@RequestMapping(method = RequestMethod.POST, value="/save")
-	public String createEvidence(@RequestParam("file") MultipartFile file){
-		try { service.create(file); } 
-		catch (IOException e) { e.printStackTrace(); }
-		return "redirect:/";
+	@RequestMapping(value="/form/{id}")
+	public String evidenceForm(	@PathVariable("id") Long pid, Model m){
+		m.addAttribute("post_id", pid);
+		return "evidence_form"; 
 	}
 	
-	
-	@RequestMapping(value = "/delete/{fileName}", method = RequestMethod.GET)
-    public String delete (@PathVariable("fileName") String fileName, Model model) {
-		try { service.delete(fileName); } 
-		catch (IOException e) { e.printStackTrace(); }
-		return "redirect:/";
-
+	@RequestMapping( value="/save", method = RequestMethod.POST)
+	public String createEvidence(	@RequestParam("file") MultipartFile file,
+									@RequestParam("post_id") Long p_id) throws IOException{
+		service.delete(service.findByPostId(p_id));
+		service.create(file, p_id);
+		return "redirect:/route";
 	}
 	
-	@RequestMapping(value="/list")
-	public String list(Model m){
-		m.addAttribute("evidence", service.getAll());
-		return "admin/evidence_list";
-	}
 }

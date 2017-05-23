@@ -3,7 +3,6 @@ package stepan.bloggger.image;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -11,40 +10,49 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import stepan.bloggger.post.Post;
+import stepan.bloggger.post.PostRepo;
+
 @Service
 public class ImageService {
 
-		
-		private static final String UPLOAD_ROOT = "/uploads"; // folder on absolute path
+		private static final String UPLOAD_ROOT = "/Users/stepan/uploads"; // folder on absolute path
 		
 		@Autowired
 		ImageRepo repo;
 		
+		@Autowired 
+		PostRepo postRepo;
+		
 		@Autowired
 		ResourceLoader loader;
 		
-		public Resource getBy(String fileName){
-			return loader.getResource("file:" + UPLOAD_ROOT +"/"+fileName);
+		public Resource get(Image image){
+			return loader.getResource("file:" + UPLOAD_ROOT +"/"+image.getId());
 		}
 		
-		public void create(MultipartFile file) throws IOException{
+		public Image create(MultipartFile file, Long postId) throws IOException{
 			if(! file.isEmpty()){
-				Files.copy(file.getInputStream(), Paths.get(UPLOAD_ROOT, file.getOriginalFilename()));
-				repo.saveAndFlush(new Image(file.getOriginalFilename(), file.getContentType(), file.getSize()));
+				Post post = postRepo.findOne(postId);
+				Image image = repo.saveAndFlush(new Image(post, file.getOriginalFilename(), file.getContentType(), file.getSize()));
+				Files.copy(file.getInputStream(), Paths.get(UPLOAD_ROOT, image.getId().toString()));
 			}
+			return null;
 		}
 		
-		public void delete(String fileName) throws IOException{
-			repo.delete(repo.findByFileName(fileName));
-			Files.deleteIfExists(Paths.get(UPLOAD_ROOT, fileName));
+		
+		public void delete(Image image) throws IOException{		
+			repo.delete(image);
+			Files.deleteIfExists(Paths.get(UPLOAD_ROOT, image.getId().toString()));
 		}
 
-		public String typeByFileName(String fileName) {
-			return repo.findByFileName(fileName).getContentType();
+		
+		public Image findByPostId(Long postId) {
+			return repo.findFirstByPostId(postId);
 		}
 
-		public List<Image> getAll() {
-			return repo.findAll();
+		public Image getById(Long id) {
+			return repo.findOne(id);
 		}
 		
 		

@@ -29,6 +29,8 @@ public class AdminSetup {
 	@Scheduled(fixedRate = Long.MAX_VALUE)
 	public void setUpAdmin(){
 		userService.create(new User(adminEmail, adminPassword), Role.ROLE_ADMIN);
+		userService.create(new User("a@a.a", "asdfasdf"), Role.ROLE_USER);
+
 		System.out.println("admin account set up: "+adminEmail +" : ******"+ adminPassword.substring(6));
 	}
 }

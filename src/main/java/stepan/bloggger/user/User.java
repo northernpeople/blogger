@@ -20,6 +20,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import stepan.bloggger.post.Post;
+
 
 @Entity
 public class User implements UserDetails{
@@ -39,6 +41,7 @@ public class User implements UserDetails{
 	
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	
 	
 
 	public User() {}
