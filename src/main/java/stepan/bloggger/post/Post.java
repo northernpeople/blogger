@@ -17,7 +17,7 @@ public class Post {
 	public Post() {
 		this.created = LocalDateTime.now();
 	}
-
+	
 	@Id @GeneratedValue
 	private Long id;
 	
@@ -69,8 +69,5 @@ public class Post {
 	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
-
-
-	
 
 }

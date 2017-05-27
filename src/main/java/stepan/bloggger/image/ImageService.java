@@ -41,9 +41,11 @@ public class ImageService {
 		}
 		
 		
-		public void delete(Image image) throws IOException{		
-			repo.delete(image);
-			Files.deleteIfExists(Paths.get(UPLOAD_ROOT, image.getId().toString()));
+		public void delete(Image image) throws IOException{	
+			if(image != null){
+				repo.delete(image);
+				Files.deleteIfExists(Paths.get(UPLOAD_ROOT, image.getId().toString()));
+			}
 		}
 
 		

@@ -5,11 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import stepan.bloggger.user.UserService;
+
 @Service
 public class PostService {
 	
 	@Autowired 
 	PostRepo repo;
+	
+	@Autowired
+	UserService userService;
 	
 	public Post create(Post post){
 		return repo.saveAndFlush(post);
@@ -25,6 +30,10 @@ public class PostService {
 
 	public Post update(Post post) {
 		return repo.saveAndFlush(post);
+	}
+
+	public List<Post> findAllByUserId(Long id) {
+		return findAllByUsername(userService.byId(id).getUsername());
 	}
 
 }

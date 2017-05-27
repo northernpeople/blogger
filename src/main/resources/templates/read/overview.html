@@ -1,0 +1,23 @@
+<html layout:decorator="layout/base">
+	<section layout:fragment="content">		
+	
+		<a th:href="@{/logout}">sign out</a>
+		
+		<h1>Posts of this user:</h1>		    	
+		
+			<table  th:if="${! #sets.isEmpty(posts)}">
+				<tr><th>email</th></tr>
+				<tr th:each="p : ${posts}">
+					<td th:text="${p.title}">Title</td>
+					<td th:text="${p.created}">Title</td>
+					<td th:text="${p.content}">Content</td>
+					
+					
+					<td><a th:href="@{/user/preview_post/{id}(id=${p.id})}">read</a></td>
+				</tr>
+			</table>
+		
+	
+				
+	</section>
+</html>

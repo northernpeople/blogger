@@ -75,9 +75,9 @@ public class UserController {
 	@RequestMapping("preview_post/{id}")
 	public String preview(@PathVariable("id") Long id, Model m){
 		Post post = postService.findById(id);
-		Image image= imageService.findByPostId(post.getId());
 		m.addAttribute(post);
-		m.addAttribute(image);
+		Image image= imageService.findByPostId(post.getId());
+		if(image != null) m.addAttribute(image);
 		return "user/post_preview";
 	}
 	
