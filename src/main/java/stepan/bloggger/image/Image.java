@@ -21,7 +21,7 @@ public class Image {
 
 	private String fileName;
 
-	private String contentType;
+	private String contentType;//MIME
 
 	// size in bytes
 	private long size;

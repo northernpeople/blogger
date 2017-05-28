@@ -26,7 +26,6 @@ public class ImageController {
 	@Autowired
 	ImageService service;
 	
-	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
 	public ResponseEntity<?> rawEvidence(@PathVariable Long id){

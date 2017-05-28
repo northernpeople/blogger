@@ -6,9 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
-import stepan.bloggger.image.Image;
 import stepan.bloggger.user.User;
 
 @Entity

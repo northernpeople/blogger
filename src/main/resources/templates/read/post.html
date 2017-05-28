@@ -1,3 +1,26 @@
-			<h1 th:text="${post.title}" ></h1>
- 			<h2 th:text="${image.fileName}"></h2>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Layout page</title>
+	</head>
+<body>
+
+
+<h1 th:text="${post.title}" ></h1>
+		<img th:src="@{/image/{id}(id=${image.id})}"/>
  			<p th:text="${post.content}"></p>
+	
+</body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+			

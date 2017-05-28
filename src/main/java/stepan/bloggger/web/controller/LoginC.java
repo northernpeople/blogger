@@ -20,7 +20,7 @@ import stepan.bloggger.web.command.PasswordChange;
 
 
 @Controller
-public class LoginC {
+public class LoginC{
 	
 	@Autowired
 	UserService userService;
@@ -30,7 +30,6 @@ public class LoginC {
 	
 	@Autowired
 	PasswordEncoder encoder;
-	
 	
 	@RequestMapping(value = "/route", method = RequestMethod.GET)
 	public String createUser(Principal principal) {
@@ -42,19 +41,13 @@ public class LoginC {
 				return "redirect:/user/main";
 			default:
 				return "redirect:/login";	
-		}
-		
+		}	
 	}
 	
 	@RequestMapping(path = {"/login", "/"}, method = RequestMethod.GET)
 	public String userForm(Model model) {
 		model.addAttribute("user", new User());
 		return "user_form";
-	}
-	
-	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public String mainPage(Model model) {
-		return "main";
 	}
 	
 	@RequestMapping(value="/change_password_form", method = RequestMethod.GET)

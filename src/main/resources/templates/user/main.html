@@ -14,7 +14,7 @@
 					
 					<td><a th:href="@{/image/form/{id}(id=${p.id})}">change background</a></td>
 					<td><a th:href="@{/user/edit_post/{id}(id=${p.id})}">edit content</a></td>
-					<td><a th:href="@{/user/preview_post/{id}(id=${p.id})}">preview</a></td>
+					<td><a th:href="@{/read/post/{id}(id=${p.id})}">preview</a></td>
 				</tr>
 			</table>
 		
@@ -29,8 +29,8 @@
 				<input type="text" th:field="*{title}"  	 	placeholder="title" />
 				<input type="text" th:field="*{content}"  	 	placeholder="content" />
 				<input type="file" name="file" />	
-				
 				<input type="submit" value="Submit" />
+				
 			</form>
 				
 	</section>

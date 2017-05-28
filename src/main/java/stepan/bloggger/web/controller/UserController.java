@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import stepan.bloggger.image.Image;
 import stepan.bloggger.image.ImageService;
 import stepan.bloggger.post.Post;
 import stepan.bloggger.post.PostService;
@@ -68,24 +67,13 @@ public class UserController {
 		post.setOwner(currentUser);
 		post = postService.create(post);
 		System.out.println(	imageService.create(file, post.getId()) );
-		return "redirect:/user/main";
-		
-	}
-	
-	@RequestMapping("preview_post/{id}")
-	public String preview(@PathVariable("id") Long id, Model m){
-		Post post = postService.findById(id);
-		m.addAttribute(post);
-		Image image= imageService.findByPostId(post.getId());
-		if(image != null) m.addAttribute(image);
-		return "user/post_preview";
+		return "redirect:/user/main";	
 	}
 	
 	@RequestMapping("edit_post/{id}")
 	public String edit_form(@PathVariable("id") Long id, Model m){
 		m.addAttribute(postService.findById(id));
 		return "user/edit_post";
-		
 	}
 	
 	@RequestMapping(value ="edit_post", method= RequestMethod.POST )
@@ -95,8 +83,7 @@ public class UserController {
 
 			if(errors.hasErrors()) return "redirect:/user/main";	
 			post = postService.update(post);
-			return "redirect:/user/main";
-					
+			return "redirect:/user/main";			
 	}
 				
 				

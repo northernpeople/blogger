@@ -27,7 +27,7 @@ public class ReaderController {
 		return "read/overview";
 	}
 	
-	@RequestMapping("read_post/{id}")
+	@RequestMapping("/post/{id}")
 	public String preview(@PathVariable("id") Long id, Model m){
 		Post post = postService.findById(id);
 		m.addAttribute(post);
