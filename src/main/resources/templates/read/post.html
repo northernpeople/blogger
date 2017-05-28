@@ -1,26 +1,48 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Layout page</title>
-	</head>
+<head>
+<div th:include="layout/style">style</div>
+<title th:text="${post.title}">title</title>
+<style>
+	body{
+	    background-image: url("/bmin.jpeg");
+	    background-position: center top; 
+	}
+</style>
+</head>
 <body>
 
+	<div class="container">
+		<div class="row">
+			<div class="col s12">
+				<div class="card large grey lighten-5">
+					<div class="card-image">
+						<img th:src="@{/image/{id}(id=${image.id})}" /> 
+						<span class="card-title  grey darken-4" th:text="${post.title}">Title</span>	
+					</div>
+					<div class="card-content">
+						<p th:text="${post.content}">I am a very simple card.</p>
+						<span class="right" th:text="${post.created.toLocalDate()}"></span>
+						
+					</div>
+					<div class="card-action">
+						<a th:href="@{/read/overview/{id}(id=${post.owner.id})}">moar frem dis autor</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<h1 th:text="${post.title}" ></h1>
-		<img th:src="@{/image/{id}(id=${image.id})}"/>
- 			<p th:text="${post.content}"></p>
-	
 </body>
-</html>	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-			
+</html>
+
+
+
+
+
+
+
+
+
+
+

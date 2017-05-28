@@ -1,6 +1,7 @@
 package stepan.bloggger.post;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,9 @@ public class PostService {
 	}
 
 	public List<Post> findAllByUserId(Long id) {
-		return findAllByUsername(userService.byId(id).getUsername());
+		return findAllByUsername(userService.byId(id).getUsername())
+				.stream().sorted( (Post x , Post y) -> x.getCreated().compareTo(y.getCreated()))
+				.collect(Collectors.toList());
 	}
 
 }

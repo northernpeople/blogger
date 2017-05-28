@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-	    <title>user sign in</title>
+	    <title>sign in</title>
 	</head>
 	<body>  		      
 		<form  action="#" th:action="@{/login}" th:object="${user}" method="post">
@@ -9,6 +9,7 @@
 			<input type="password" th:field="*{password}"  	placeholder="password" />
 			<input type="submit" value="Submit" />
 		</form>
+		<a th:href="@{/user/register_form}">register</a>
 	</body>
 	
 	

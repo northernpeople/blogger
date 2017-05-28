@@ -4,14 +4,14 @@
 		<div th:include="layout/style"> style </div>	
 		<title>Layout page</title>
 	</head>
-<body>
-	<span th:utext="${session.userEmail}"></span>
-	<span th:utext="${session.adminEmail}"></span>
-	<h1>Header</h1>
-	<hr/>
-	<div layout:fragment="content"></div>
-	<hr/>
-	<h1>Footer</h1>
-	
-</body>
+	<body>
+		
+		<div th:include="layout/menu">menu</div>
+		
+		<div class="container">
+			<div layout:fragment="content"></div>
+		</div>
+		
+		
+	</body>
 </html>

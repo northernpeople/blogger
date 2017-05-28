@@ -1,23 +1,44 @@
-<html layout:decorator="layout/base">
-	<section layout:fragment="content">		
-	
-		<a th:href="@{/logout}">sign out</a>
-		
-		<h1>Posts of this user:</h1>		    	
-		
-			<table  th:if="${! #sets.isEmpty(posts)}">
-				<tr><th>email</th></tr>
-				<tr th:each="p : ${posts}">
-					<td th:text="${p.title}">Title</td>
-					<td th:text="${p.created}">Title</td>
-					<td th:text="${p.content}">Content</td>
+<!DOCTYPE html>
+<html>
+<head>
+<div th:include="layout/style">style</div>
+<style>
+body {
+	background-image: url("/bmin.jpeg");
+	background-position: center top;
+}
+</style>
+</head>
+<body>
+
+	<div class="container">
+
+		<div class="row" th:if="${! #sets.isEmpty(posts)}">
+			<div class="col s4" th:each="p : ${posts}">
+
+
+				<div class="card grey darken-4">
+					<div class="card-content white-text">
+						<span class="card-title" th:text="${p.title}">Card Title</span>
+						<span class="right" th:text="${p.created.toLocalDate()}"></span>
+						
+						<p th:text="|${p.content.substring(0, 3)}...|">I am a very simple card</p>
+					</div>
 					
 					
-					<td><a th:href="@{/read/post/{id}(id=${p.id})}">read</a></td>
-				</tr>
-			</table>
-		
-	
-				
-	</section>
+					<div class="card-action">
+						<a th:href="@{/read/post/{id}(id=${p.id})}">moar</a>
+						
+					</div>
+				</div>
+
+
+			</div>
+
+		</div>
+	</div>
+
+
+
+</body>
 </html>

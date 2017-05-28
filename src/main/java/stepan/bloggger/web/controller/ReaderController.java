@@ -22,8 +22,8 @@ public class ReaderController {
 	ImageService imageService;
 	
 	@RequestMapping("/overview/{id}")
-	public String postListOf(@PathVariable("id") Long id, Model m){
-		m.addAttribute("posts", postService.findAllByUserId(id));
+	public String postListOf(@PathVariable("id") Long userId, Model m){
+		m.addAttribute("posts", postService.findAllByUserId(userId));
 		return "read/overview";
 	}
 	
