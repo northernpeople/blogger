@@ -1,2 +1,10 @@
 <a th:href="@{/logout}">sign out</a>
 <a th:href="@{/change_password_form}">change password</a>
+
+<div sec:authorize="hasRole('ROLE_USER')">
+  This will only be displayed if authenticated user has role ROLE_ADMIN.
+</div>
+
+<div sec:authentication="name">
+  The value of the "name" property of the authentication object should appear here.
+</div>
