@@ -10,18 +10,28 @@
 				<tr th:each="u : ${users}">
 					<td th:text="${u.username}"> email </td>
 					<td th:text="${u.role}"> role </td>
-					<td><a class="btn red" th:href="@{/admin/delete_user/{id}(id=${u.id})}">delete</a></td>
+					<td><a class="btn cyan lighten-2" th:href="@{/read/overview/{id}(id=${u.id})}">view blog</a></td>
 					<td><a class="btn red" th:href="@{/admin/reset_pass_user/{id}(id=${u.id})}">reset password</a></td>
+					<td><a class="btn red" th:href="@{/admin/delete_user/{id}(id=${u.id})}">delete</a></td>
 				</tr>
 				
 			</table>
 		
-		<h1>Create new user:</h1>
 		
-			<form  action="#" th:action="@{/admin/createuser}" th:object="${user}" method="post">
-				<input type="text" th:field="*{username}"  	 	placeholder="email" />
-				<input type="submit" value="Submit" />
-			</form>
+		<br/>
+		<div class="row">
+      		<div class="col s4"><h4 class="right">Create new user:</h4></div>
+      		<form  action="#" th:action="@{/admin/createuser}" th:object="${user}" method="post">
+      		
+	      		<div class="col s4"><input type="text" th:field="*{username}"  	 	placeholder="email" /></div>
+	      		<div class="col s4"><input class="btn red" type="submit" value="Submit" /></div>
+      		</form>
+      		
+      	</div>
+		
+		
+				
+				
 				
 	</section>
 </html>

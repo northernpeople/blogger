@@ -1,5 +1,6 @@
 package stepan.bloggger.web.controller;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -31,20 +32,24 @@ public class AdminC {
 	EmailService emailService;
 	
 	@RequestMapping(value = "/reset_pass_user/{id}", method = RequestMethod.GET)
-    public String resetPassword (@PathVariable("id") Long id, Model model) {
+    public String resetPassword (@PathVariable("id") Long id, RedirectAttributes model) {
 		String tempPassword = UUID.randomUUID().toString().replaceAll("-", "");
 		User user = userService.byId(id);
 		user.setPassword(tempPassword);
 		userService.rehashPassword(user);
 		emailService.send(user.getUsername(), "Your password has been reset", "Use the following temporary password: "+ tempPassword);
+		model.addFlashAttribute("messages", Arrays.asList("Password reset", "Inform user to check email with new password"));
 		return "redirect:/admin/main";
 	}
 	
 	@RequestMapping(value = "/delete_user/{id}", method = RequestMethod.GET)
-    public String deleteUser (@PathVariable("id") Long id, Model model) {
+    public String deleteUser (@PathVariable("id") Long id, RedirectAttributes model) {
 		if(! userService.byId(id).getRole().equals(Role.ROLE_ADMIN)){
+			model.addFlashAttribute("messages", Arrays.asList("Account deleted"));
 			userService.delete(id);
+			return "redirect:/admin/main";
 		}
+		model.addFlashAttribute("messages", Arrays.asList("Admin account cannot be deleted"));
 		return "redirect:/admin/main";
 	}
 	
@@ -57,6 +62,7 @@ public class AdminC {
 		userService.create(candidate, Role.ROLE_USER);
 		
 		emailService.send(candidate.getUsername(), "Your account is ready", "Use the following temporary password: "+ tempPassword);
+		model.addFlashAttribute("messages", Arrays.asList("Account created"));
 		return "redirect:/admin/main";
 	}
 	

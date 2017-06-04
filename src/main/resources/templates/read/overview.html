@@ -4,14 +4,15 @@
 <div th:include="layout/style">style</div>
 <style>
 body {
-	background-image: url("/bmin.jpeg");
+	background-image: url("/wh_boards.jpg");
 	background-position: center top;
 }
 </style>
 </head>
 <body>
-
+	<br/>
 	<div class="container">
+		<h1 th:if="${ #sets.isEmpty(posts)}"> No posts by this author yet</h1>
 
 		<div class="row" th:if="${! #sets.isEmpty(posts)}">
 			<div class="col s4" th:each="p : ${posts}">
@@ -19,10 +20,10 @@ body {
 
 				<div class="card grey darken-4">
 					<div class="card-content white-text">
-						<span class="card-title" th:text="${p.title}">Card Title</span>
+						<span class="card-title" th:text="|${p.title.substring(0, 15)}...|">Card Title</span>
 						<span class="right" th:text="${p.created.toLocalDate()}"></span>
 						
-						<p th:text="|${p.content.substring(0, 3)}...|">I am a very simple card</p>
+						<p th:text="|${p.content.substring(0, 20)}...|">I am a very simple card</p>
 					</div>
 					
 					

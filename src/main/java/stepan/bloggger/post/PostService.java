@@ -39,4 +39,8 @@ public class PostService {
 				.collect(Collectors.toList());
 	}
 
+	public void delete(Long id) {
+		repo.delete(id);
+	}
+
 }

@@ -1,10 +1,33 @@
-<a th:href="@{/logout}">sign out</a>
-<a th:href="@{/change_password_form}">change password</a>
+<nav>
+    <div class="nav-wrapper   cyan lighten-2">
+      <ul id="nav-mobile" class="right">
+      	<li>
+      		Hello 
+      		<span sec:authentication="name">
+			  The value of the "name" property of the authentication object should appear here.
+			</span>
+			<span class="" sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN] </span>
+		</li>
+      	
+      	<li>
+        	<span sec:authorize="hasRole('ROLE_USER')">
+				<a th:href="@{/read/overview/{id}(id=${user_id})}">link to your public blog</a>
+			</span>
+		</li>
 
-<div sec:authorize="hasRole('ROLE_USER')">
-  This will only be displayed if authenticated user has role ROLE_ADMIN.
-</div>
+		
+      	
+        
+        <li><a th:href="@{/change_password_form}">change password</a></li>
+        <li><a th:href="@{/logout}">sign out</a></li>
+      </ul>
+    </div>
+</nav>
+  
+  
 
-<div sec:authentication="name">
-  The value of the "name" property of the authentication object should appear here.
-</div>
+
+
+
+
+

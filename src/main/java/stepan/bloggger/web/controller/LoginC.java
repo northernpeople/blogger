@@ -1,6 +1,7 @@
 package stepan.bloggger.web.controller;
 
 import java.security.Principal;
+import java.util.Arrays;
 
 import javax.validation.Valid;
 
@@ -59,23 +60,25 @@ public class LoginC{
 	@RequestMapping(value="/change_password", method=RequestMethod.POST)
 	public String changePassword(@Valid PasswordChange request, Errors errors, RedirectAttributes model){
 		if(errors.hasErrors()){
-			model.addFlashAttribute("warning", "something is not right");
+			model.addFlashAttribute("messages", Arrays.asList("Please fix the errors"));
 			return "change_password_form";		
 		}
 		User currentUser = userService.currentUser();
 		if(currentUser == null || ! encoder.matches(request.getOld(), currentUser.getPassword())){
-			model.addFlashAttribute("warning", "please sign in again");
+			model.addFlashAttribute("messages", Arrays.asList("Please sing in"));
 			return "redirect:/";
 		}
 		if(! request.getNew1().equals(request.getNew2())){
 			errors.rejectValue("new2", "Match", "new passwords must match");
+			model.addFlashAttribute("messages", Arrays.asList("passwords don't match"));
 			return "change_password_form";		
 		}
 		currentUser.setPassword(request.getNew1());
 		userService.rehashPassword(currentUser);
 		emailService.send(currentUser.getUsername(), 
 				"Your password has been changed!", 
-				"Please contact your administrator if you did not change it");
+				"Please contact administrator if you did not change it");
+		model.addFlashAttribute("messages", Arrays.asList("Password has been changed"));
 		return "redirect:/logout";
 	}
 

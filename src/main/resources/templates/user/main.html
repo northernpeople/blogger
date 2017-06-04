@@ -1,20 +1,22 @@
 <html layout:decorator="layout/base">
 	<section layout:fragment="content">		
 			
-		<h1>Posts</h1>		    	
-		
+		<h1 th:if="${! #sets.isEmpty(posts)}">Posts</h1>		    	
+			
 			<table  th:if="${! #sets.isEmpty(posts)}">
 			
-				<tr><th>Title</th><th>Created</th><th>Content</th></tr>
+				<tr><th>Id</th><th>Title</th><th>Created</th></tr>
 				
 				<tr th:each="p : ${posts}">
-					<td th:text="${p.title}">					Title</td>
-					<td th:text="${p.created.toLocalDate()}">	01-01-10</td>
-					<td th:text="${p.content}">					Content</td>
+					<td th:text="${p.id}">							Id</td>
+					<td th:text="|${p.title.substring(0, 15)}...|">	Title</td>
+					<td th:text="${p.created.toLocalDate()}">		01-01-10</td>
 					
+					<td><a th:href="@{/read/post/{id}(id=${p.id})}">		preview</a></td>
 					<td><a th:href="@{/image/form/{id}(id=${p.id})}">		change background</a></td>
 					<td><a th:href="@{/user/edit_post/{id}(id=${p.id})}">	edit content</a></td>
-					<td><a th:href="@{/read/post/{id}(id=${p.id})}">		preview</a></td>
+					<td><a th:href="@{/user/delete_post/{id}(id=${p.id})}">	delete</a></td>
+					
 				</tr>
 			</table>
 		
@@ -30,6 +32,8 @@
 				<input type="text" th:field="*{content}"  	 	placeholder="content" />
 				<input type="file" name="file" />	
 				<input class="btn green" type="submit" value="Submit" />
+				<a class="btn red" th:href="@{/route}">Cancel</a>
+				
 				
 			</form>
 				
