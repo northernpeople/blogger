@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,10 +45,10 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(@Valid User user, Errors errors, RedirectAttributes m){
+	public String register(@Valid @ModelAttribute("registration_request") User user, Errors errors, RedirectAttributes m){
 		if(errors.hasErrors()){
-			m.addFlashAttribute("messages", Arrays.asList("please fix these errors"));
-			return "redirect:/user/register_form";
+			m.addAttribute("registration_request", user);
+			return "register_form";
 		}
 		userService.create(user, Role.ROLE_USER);
 		m.addFlashAttribute("messages", Arrays.asList("You have been successfully registered"));
@@ -58,7 +59,7 @@ public class UserController {
 	public String main(Model m, Principal p){
 		m.addAttribute("user_id", userService.byUserName(p.getName()).getId());
 		m.addAttribute("posts", postService.findAllByUsername(p.getName()));
-		m.addAttribute("new_post", new Post());
+		m.addAttribute("post", new Post());
 		return "user/main";	
 	}
 	
@@ -66,18 +67,23 @@ public class UserController {
 	public String createPost(@Valid Post post, 
 							Errors errors,
 							@RequestParam("file") MultipartFile file, 
-							RedirectAttributes model,
+							Model m,
+							RedirectAttributes redirect,
 							Principal p ) throws IOException{
 		
 		if(errors.hasErrors() || file.isEmpty()){
-			model.addAttribute("messages", Arrays.asList("Please fix the errors"));
-			return "redirect:/user/main";
+			if(file.isEmpty()) m.addAttribute("messages", Arrays.asList("File is required"));
+			m.addAttribute("user_id", userService.byUserName(p.getName()).getId());
+			m.addAttribute("posts", postService.findAllByUsername(p.getName()));
+			m.addAttribute("post", post);
+			return "user/main";
 		}
+		
 		User currentUser = userService.byUserName(p.getName());
 		post.setOwner(currentUser);
 		post = postService.create(post);
 		imageService.create(file, post.getId());
-		model.addFlashAttribute("messages", Arrays.asList("post created"));
+		redirect.addFlashAttribute("messages", Arrays.asList("post created"));
 		return "redirect:/user/main";	
 	}
 	

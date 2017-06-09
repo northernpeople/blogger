@@ -23,7 +23,6 @@ body {
 					<div class="card-content">
 						<p th:text="${post.content}">I am a very simple card.</p>
 						<span class="right" th:text="${post.created.toLocalDate()}"></span>
-						
 					</div>
 					<div class="card-action">
 						<a th:href="@{/read/overview/{id}(id=${post.owner.id})}">moar frem dis autor</a>
