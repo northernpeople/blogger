@@ -20,10 +20,10 @@ body {
 
 				<div class="card grey darken-4">
 					<div class="card-content white-text">
-						<span class="card-title" th:text="|${p.title.substring(0, 15)}...|">Card Title</span>
+						<span class="card-title" th:text="${p.title}">Card Title</span>
 						<span class="right" th:text="${p.created.toLocalDate()}"></span>
 						
-						<p th:text="|${p.content.substring(0, 20)}...|">I am a very simple card</p>
+						<p th:text="${p.content}">I am a very simple card</p>
 					</div>
 					
 					
