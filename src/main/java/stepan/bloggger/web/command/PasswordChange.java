@@ -7,7 +7,7 @@ public class PasswordChange {
 	
 	
 	@NotNull
-	@Size(min=1, max=255)
+	@Size(min=7, max=255)
 	private String old;
 	
 	@NotNull
@@ -27,6 +27,7 @@ public class PasswordChange {
 	
 	public PasswordChange(){}
 
+	
 	public String getOld() {
 		return old;
 	}

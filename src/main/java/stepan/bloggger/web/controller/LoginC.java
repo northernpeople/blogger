@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -51,34 +52,41 @@ public class LoginC{
 		return "user_form";
 	}
 	
-	@RequestMapping(value="/change_password_form", method = RequestMethod.GET)
+	@RequestMapping(path="/change_password_form", method = RequestMethod.GET)
 	public String changePasswordForm(Model model){
-		model.addAttribute("request", new PasswordChange());
+		model.addAttribute("pass_request", new PasswordChange());
 		return "change_password_form";
 	}
 	
-	@RequestMapping(value="/change_password", method=RequestMethod.POST)
-	public String changePassword(@Valid PasswordChange request, Errors errors, RedirectAttributes model){
+	@RequestMapping(path="/change_password", method=RequestMethod.POST)
+	public String changePassword(@Valid @ModelAttribute("pass_request") PasswordChange changeRequest, Errors errors, Model model){
 		if(errors.hasErrors()){
-			model.addFlashAttribute("messages", Arrays.asList("Please fix the errors"));
+			model.addAttribute("pass_request", changeRequest);
 			return "change_password_form";		
 		}
+		if(! changeRequest.getNew1().equals(changeRequest.getNew2())){
+			errors.rejectValue("new2", "Match", "new passwords must match");
+			model.addAttribute("pass_request", changeRequest);
+			return "change_password_form";		
+		}
+		if( changeRequest.getOld().equals(changeRequest.getNew2())){
+			errors.rejectValue("new1", "Match", "new passwords must not match the old one");
+			model.addAttribute("pass_request", changeRequest);
+			return "change_password_form";		
+		}
+		
 		User currentUser = userService.currentUser();
-		if(currentUser == null || ! encoder.matches(request.getOld(), currentUser.getPassword())){
-			model.addFlashAttribute("messages", Arrays.asList("Please sing in"));
+		if(currentUser == null || ! encoder.matches(changeRequest.getOld(), currentUser.getPassword())){
+			model.addAttribute("messages", Arrays.asList("Please sing in"));
 			return "redirect:/";
 		}
-		if(! request.getNew1().equals(request.getNew2())){
-			errors.rejectValue("new2", "Match", "new passwords must match");
-			model.addFlashAttribute("messages", Arrays.asList("passwords don't match"));
-			return "change_password_form";		
-		}
-		currentUser.setPassword(request.getNew1());
+		
+		currentUser.setPassword(changeRequest.getNew1());
 		userService.rehashPassword(currentUser);
 		emailService.send(currentUser.getUsername(), 
 				"Your password has been changed!", 
 				"Please contact administrator if you did not change it");
-		model.addFlashAttribute("messages", Arrays.asList("Password has been changed"));
+		model.addAttribute("messages", Arrays.asList("Password has been changed"));
 		return "redirect:/logout";
 	}
 

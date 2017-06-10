@@ -35,5 +35,4 @@ public class ReaderController {
 		if(image != null) m.addAttribute(image);
 		return "read/post";
 	}
-
 }
