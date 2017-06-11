@@ -18,17 +18,15 @@ body {
 			<div class="col s4" th:each="p : ${posts}">
 
 
-				<div class="card grey darken-4">
+				<div class="card cyan lighten-2">
 					<div class="card-content white-text">
 						<span class="card-title" th:text="${p.title}">Card Title</span>
-						<span class="right" th:text="${p.created.toLocalDate()}"></span>
-						
-						<p th:text="${p.content}">I am a very simple card</p>
+						<p th:text="|${p.content.substring(0, 10)}...|">I am a very simple card</p>
 					</div>
 					
-					
-					<div class="card-action">
-						<a th:href="@{/read/post/{id}(id=${p.id})}">moar</a>
+					<div class="card-action white">
+						<a th:href="@{/read/post/{id}(id=${p.id})}">read more</a>
+						<span class="right" th:text="${p.created.toLocalDate()}"></span>
 						
 					</div>
 				</div>
