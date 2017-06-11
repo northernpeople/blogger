@@ -50,6 +50,11 @@ public class UserController {
 			m.addAttribute("registration_request", user);
 			return "register_form";
 		}
+		if(userService.usernameTaken(user)){
+			errors.rejectValue("username", "Match", "username taken");
+			m.addAttribute("registration_request", user);
+			return "register_form";
+		}
 		userService.create(user, Role.ROLE_USER);
 		m.addFlashAttribute("messages", Arrays.asList("You have been successfully registered"));
 		return "redirect:/login";

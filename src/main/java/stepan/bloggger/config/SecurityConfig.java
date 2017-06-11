@@ -32,16 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/assets/**", "/evidence/**");
+        web.ignoring().antMatchers("/assets/**");
     }
 	
 	 @Override
 	    protected void configure(HttpSecurity http) throws Exception {
 	        http
-		        .authorizeRequests()
-		        	.antMatchers("/**").permitAll()
-//		            .antMatchers("/admin/**").hasRole("ADMIN") // order is important
-//		            .antMatchers("/**").hasAnyRole("ADMIN", "USER")
+		        .authorizeRequests() // order is important
+	            	.antMatchers("/read/**", "/user/register_form", "/user/register").permitAll()
+		            .antMatchers("/admin/**").hasRole("ADMIN") 
+		            .antMatchers("/**").hasAnyRole("ADMIN", "USER")
 		            .and()
 	            .formLogin()
 	                .loginPage("/login")
