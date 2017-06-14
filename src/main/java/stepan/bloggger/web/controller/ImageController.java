@@ -52,11 +52,23 @@ public class ImageController {
 	@RequestMapping( value="/save", method = RequestMethod.POST)
 	public String createEvidence(	@RequestParam("file") MultipartFile file,
 									@RequestParam("post_id") Long p_id,
-									RedirectAttributes model
-			) throws IOException{
+									Model model,
+									RedirectAttributes redirect	) throws IOException{
+		
+		if(file.isEmpty()){
+			model.addAttribute("messages", Arrays.asList("File is required"));
+			model.addAttribute("post_id", p_id);
+			return "evidence_form"; 
+		}
+		
+		if(! file.getContentType().equals("image/jpeg")){
+			model.addAttribute("messages", Arrays.asList("Only files with .jpeg extension are allowed"));
+			model.addAttribute("post_id", p_id);
+			return "evidence_form"; 
+		}
 		service.delete(service.findByPostId(p_id));
 		service.create(file, p_id);
-		model.addFlashAttribute("messages", Arrays.asList("Image saved"));
+		redirect.addFlashAttribute("messages", Arrays.asList("Image saved"));
 		return "redirect:/route";
 	}
 	

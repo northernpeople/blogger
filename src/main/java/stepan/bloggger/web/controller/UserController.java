@@ -76,8 +76,23 @@ public class UserController {
 							RedirectAttributes redirect,
 							Principal p ) throws IOException{
 		
-		if(errors.hasErrors() || file.isEmpty()){
-			if(file.isEmpty()) m.addAttribute("messages", Arrays.asList("File is required"));
+		if(file.isEmpty()){
+			m.addAttribute("messages", Arrays.asList("File is required"));
+			m.addAttribute("user_id", userService.byUserName(p.getName()).getId());
+			m.addAttribute("posts", postService.findAllByUsername(p.getName()));
+			m.addAttribute("post", post);
+			return "user/main";
+		}
+		
+		if(! file.getContentType().equals("image/jpeg")){
+			m.addAttribute("messages", Arrays.asList("Only files with .jpeg extension are allowed"));
+			m.addAttribute("user_id", userService.byUserName(p.getName()).getId());
+			m.addAttribute("posts", postService.findAllByUsername(p.getName()));
+			m.addAttribute("post", post);
+			return "user/main";
+		}
+		
+		if(errors.hasErrors()){
 			m.addAttribute("user_id", userService.byUserName(p.getName()).getId());
 			m.addAttribute("posts", postService.findAllByUsername(p.getName()));
 			m.addAttribute("post", post);
