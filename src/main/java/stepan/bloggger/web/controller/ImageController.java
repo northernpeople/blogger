@@ -52,8 +52,7 @@ public class ImageController {
 	@RequestMapping( value="/save", method = RequestMethod.POST)
 	public String createEvidence(	@RequestParam("file") MultipartFile file,
 									@RequestParam("post_id") Long p_id,
-									Model model,
-									RedirectAttributes redirect	) throws IOException{
+									Model model	) throws IOException{
 		
 		if(file.isEmpty()){
 			model.addAttribute("messages", Arrays.asList("File is required"));
@@ -68,7 +67,7 @@ public class ImageController {
 		}
 		service.delete(service.findByPostId(p_id));
 		service.create(file, p_id);
-		redirect.addFlashAttribute("messages", Arrays.asList("Image saved"));
+		model.addAttribute("messages", Arrays.asList("Image saved"));
 		return "redirect:/route";
 	}
 	
