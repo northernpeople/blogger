@@ -129,7 +129,8 @@ public class UserController {
 
 			if(errors.hasErrors()){
 				model.addFlashAttribute("messages", Arrays.asList("Please fix errors"));
-				return "redirect:/user/edit_post/"+post.getId();	
+				model.addAttribute(post);
+				return "user/edit_post";	
 			}
 			post = postService.update(post);
 			model.addFlashAttribute("messages", Arrays.asList("Successfully edited post"));

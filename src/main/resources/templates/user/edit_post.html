@@ -8,10 +8,23 @@
 					th:object="${post}"
 					method="post">
 					
+				<div th:include="layout/errors">errors</div>
+					
+				
 				<input type="hidden" th:field="*{id}" />
 				<input type="hidden" th:field="*{owner.id}" />								
 				<input type="text" 	 th:field="*{title}"  	 	placeholder="title" />
-				<input type="text" 	 th:field="*{content}"  	placeholder="content" />				
+					<span class="" th:if="${#fields.hasErrors('title')}">
+						<ul>
+							<li class="chip red" th:each="err : ${#fields.errors('title')}" th:text="${err}">err</li>
+						</ul>
+					</span>
+				<input type="text" 	 th:field="*{content}"  	placeholder="content" />	
+					<span class="" th:if="${#fields.hasErrors('content')}">
+						<ul>
+							<li class="chip red" th:each="err : ${#fields.errors('content')}" th:text="${err}">err</li>
+						</ul>
+					</span>			
 				<input type="submit" value="Update" class="btn red"/>
 				<a class="btn red" th:href="@{/route}">Cancel</a>
 				
