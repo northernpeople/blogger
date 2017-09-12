@@ -7,4 +7,5 @@ To get started:
 * import maven project
 * BlogggerApplication.java > run as java application
 
-
+Live version:
+http://45.77.98.223:8080/
